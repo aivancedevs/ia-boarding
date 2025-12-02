@@ -1,0 +1,384 @@
+{
+    "info": {
+      "name": "API Gateway - AIVANCE",
+      "description": "Colección completa para testing del API Gateway",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": [
+        {
+          "key": "token",
+          "value": "{{authToken}}",
+          "type": "string"
+        }
+      ]
+    },
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "http://localhost:4000",
+        "type": "string"
+      },
+      {
+        "key": "authToken",
+        "value": "",
+        "type": "string"
+      }
+    ],
+    "item": [
+      {
+        "name": "Health & Info",
+        "item": [
+          {
+            "name": "Root - Welcome",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/",
+                "host": ["{{baseUrl}}"],
+                "path": [""]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Health Check",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/health",
+                "host": ["{{baseUrl}}"],
+                "path": ["health"]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Authentication",
+        "item": [
+          {
+            "name": "Register",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 201 || pm.response.code === 200) {",
+                    "    const response = pm.response.json();",
+                    "    if (response.data && response.data.token) {",
+                    "        pm.environment.set('authToken', response.data.token);",
+                    "        pm.collectionVariables.set('authToken', response.data.token);",
+                    "        console.log('Token guardado:', response.data.token);",
+                    "    }",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Password123!\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/auth/register",
+                "host": ["{{baseUrl}}"],
+                "path": ["auth", "register"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Login",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "if (pm.response.code === 200) {",
+                    "    const response = pm.response.json();",
+                    "    if (response.data && response.data.token) {",
+                    "        pm.environment.set('authToken', response.data.token);",
+                    "        pm.collectionVariables.set('authToken', response.data.token);",
+                    "        console.log('Token guardado:', response.data.token);",
+                    "    }",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"Password123!\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/auth/login",
+                "host": ["{{baseUrl}}"],
+                "path": ["auth", "login"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Get Profile (Protected)",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/auth/profile",
+                "host": ["{{baseUrl}}"],
+                "path": ["auth", "profile"]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Users Service",
+        "item": [
+          {
+            "name": "Get All Users",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/users?page=1&limit=10",
+                "host": ["{{baseUrl}}"],
+                "path": ["users"],
+                "query": [
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Get User by ID",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/users/123",
+                "host": ["{{baseUrl}}"],
+                "path": ["users", "123"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Create User",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"New User\",\n  \"email\": \"newuser@example.com\",\n  \"role\": \"user\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/users",
+                "host": ["{{baseUrl}}"],
+                "path": ["users"]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "IA Service",
+        "item": [
+          {
+            "name": "Analyze Text",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"text\": \"This is a sample text to analyze\",\n  \"options\": {\n    \"sentiment\": true,\n    \"keywords\": true\n  }\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/ia/analyze",
+                "host": ["{{baseUrl}}"],
+                "path": ["ia", "analyze"]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Testing - Rate Limiting",
+        "item": [
+          {
+            "name": "Test Rate Limit (Run multiple times)",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/health",
+                "host": ["{{baseUrl}}"],
+                "path": ["health"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Test Auth Rate Limit (Login spam)",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"wrong@example.com\",\n  \"password\": \"wrongpassword\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/auth/login",
+                "host": ["{{baseUrl}}"],
+                "path": ["auth", "login"]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Testing - Unauthorized Access",
+        "item": [
+          {
+            "name": "Access Protected Route Without Token",
+            "request": {
+              "auth": {
+                "type": "noauth"
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/users",
+                "host": ["{{baseUrl}}"],
+                "path": ["users"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Access with Invalid Token",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "invalid.token.here",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/users",
+                "host": ["{{baseUrl}}"],
+                "path": ["users"]
+              }
+            },
+            "response": []
+          }
+        ]
+      }
+    ]
+  }
