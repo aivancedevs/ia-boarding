@@ -1,0 +1,109 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = []
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Client {
+  id          String       @id @default(dbgenerated("(gen_random_uuid())::text"))
+  name        String
+  description String?
+  email       String       @unique
+  phone       String?
+  address     String?
+  status      ClientStatus @default(ACTIVE)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now()) @updatedAt
+  projects    Project[]
+  users       User[]
+
+  @@index([email])
+  @@index([status])
+  @@map("clients")
+}
+
+model User {
+  id        String     @id @default(dbgenerated("(gen_random_uuid())::text"))
+  email     String     @unique
+  firstName String
+  lastName  String
+  role      UserRole   @default(USER)
+  status    UserStatus @default(ACTIVE)
+  clientId  String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now()) @updatedAt
+  client    Client?    @relation(fields: [clientId], references: [id])
+
+  @@index([clientId])
+  @@index([email])
+  @@index([role])
+  @@index([status])
+  @@map("users")
+}
+
+model Project {
+  id          String        @id @default(dbgenerated("(gen_random_uuid())::text"))
+  name        String
+  description String?
+  status      ProjectStatus @default(ACTIVE)
+  clientId    String
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+  client      Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  @@index([clientId])
+  @@index([status])
+  @@map("projects")
+}
+
+model project_automation_logs {
+  id                     String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  created_at             DateTime? @default(now()) @db.Timestamp(6)
+  notion_project_id      String
+  project_name           String
+  client_name            String?
+  status                 String?
+  drive_main_folder_id   String?
+  drive_main_folder_url  String?
+  drive_documentos_url   String?
+  drive_presupuestos_url String?
+  drive_reuniones_url    String?
+  drive_source_url       String?
+  drive_testing_url      String?
+  execution_id           String?
+  workflow_id            String?
+  success                Boolean?  @default(true)
+  error_message          String?
+  execution_time_ms      Int?
+  triggered_by           String?
+  notion_updated         Boolean?  @default(false)
+  email_sent             Boolean?  @default(false)
+}
+
+enum UserRole {
+  ADMIN
+  CLIENT_ADMIN
+  USER
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ClientStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ProjectStatus {
+  ACTIVE
+  ARCHIVED
+}

@@ -1,0 +1,707 @@
+{
+    "info": {
+      "name": "Users Service API",
+      "description": "Colección completa para probar el Users Service",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+      {
+        "key": "base_url",
+        "value": "http://localhost:3002/api",
+        "type": "string"
+      },
+      {
+        "key": "user_id",
+        "value": "550e8400-e29b-41d4-a716-446655440000",
+        "type": "string"
+      },
+      {
+        "key": "user_email",
+        "value": "admin@example.com",
+        "type": "string"
+      },
+      {
+        "key": "user_role",
+        "value": "ADMIN",
+        "type": "string"
+      },
+      {
+        "key": "client_id",
+        "value": "",
+        "type": "string"
+      },
+      {
+        "key": "project_id",
+        "value": "",
+        "type": "string"
+      }
+    ],
+    "item": [
+      {
+        "name": "Health Check",
+        "item": [
+          {
+            "name": "Health Check",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/health",
+                "host": ["{{base_url}}"],
+                "path": ["health"]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Users",
+        "item": [
+          {
+            "name": "Get All Users",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "{{user_role}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/users?page=1&limit=10",
+                "host": ["{{base_url}}"],
+                "path": ["users"],
+                "query": [
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  },
+                  {
+                    "key": "status",
+                    "value": "ACTIVE",
+                    "disabled": true
+                  },
+                  {
+                    "key": "role",
+                    "value": "USER",
+                    "disabled": true
+                  },
+                  {
+                    "key": "clientId",
+                    "value": "",
+                    "disabled": true
+                  }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Get User by ID",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "{{user_role}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/users/:id",
+                "host": ["{{base_url}}"],
+                "path": ["users", ":id"],
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "{{user_id}}"
+                  }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Create User",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "ADMIN",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"email\": \"newuser@example.com\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"role\": \"USER\",\n  \"clientId\": \"{{client_id}}\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/users",
+                "host": ["{{base_url}}"],
+                "path": ["users"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Update User",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "ADMIN",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/users/:id",
+                "host": ["{{base_url}}"],
+                "path": ["users", ":id"],
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "{{user_id}}"
+                  }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Update User Role",
+            "request": {
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "ADMIN",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"role\": \"CLIENT_ADMIN\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/users/:id/role",
+                "host": ["{{base_url}}"],
+                "path": ["users", ":id", "role"],
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "{{user_id}}"
+                  }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Delete User (Deactivate)",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "ADMIN",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/users/:id",
+                "host": ["{{base_url}}"],
+                "path": ["users", ":id"],
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "{{user_id}}"
+                  }
+                ]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Clients",
+        "item": [
+          {
+            "name": "Get All Clients",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "{{user_role}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/clients?page=1&limit=10",
+                "host": ["{{base_url}}"],
+                "path": ["clients"],
+                "query": [
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  },
+                  {
+                    "key": "status",
+                    "value": "ACTIVE",
+                    "disabled": true
+                  }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Get Client by ID",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "{{user_role}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/clients/:id",
+                "host": ["{{base_url}}"],
+                "path": ["clients", ":id"],
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "{{client_id}}"
+                  }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Create Client",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "ADMIN",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"New Tech Company\",\n  \"description\": \"Innovative software solutions\",\n  \"email\": \"contact@newtech.com\",\n  \"phone\": \"+1234567890\",\n  \"address\": \"123 Tech Street, Silicon Valley\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/clients",
+                "host": ["{{base_url}}"],
+                "path": ["clients"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Update Client",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "ADMIN",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Updated Company Name\",\n  \"phone\": \"+9876543210\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/clients/:id",
+                "host": ["{{base_url}}"],
+                "path": ["clients", ":id"],
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "{{client_id}}"
+                  }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Client (Deactivate)",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "ADMIN",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/clients/:id",
+                "host": ["{{base_url}}"],
+                "path": ["clients", ":id"],
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "{{client_id}}"
+                  }
+                ]
+              }
+            },
+            "response": []
+          }
+        ]
+      },
+      {
+        "name": "Projects",
+        "item": [
+          {
+            "name": "Get Projects by Client",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "{{user_role}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/clients/:clientId/projects",
+                "host": ["{{base_url}}"],
+                "path": ["clients", ":clientId", "projects"],
+                "variable": [
+                  {
+                    "key": "clientId",
+                    "value": "{{client_id}}"
+                  }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Get Project by ID",
+            "request": {
+              "method": "GET",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "{{user_role}}",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/projects/:id",
+                "host": ["{{base_url}}"],
+                "path": ["projects", ":id"],
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "{{project_id}}"
+                  }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Create Project",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "ADMIN",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"New Mobile App\",\n  \"description\": \"iOS and Android application development\",\n  \"clientId\": \"{{client_id}}\",\n  \"startDate\": \"2024-03-01\",\n  \"endDate\": \"2024-12-31\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/projects",
+                "host": ["{{base_url}}"],
+                "path": ["projects"]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Update Project",
+            "request": {
+              "method": "PUT",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "ADMIN",
+                  "type": "text"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"name\": \"Updated Project Name\",\n  \"description\": \"Updated description\",\n  \"status\": \"ACTIVE\"\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/projects/:id",
+                "host": ["{{base_url}}"],
+                "path": ["projects", ":id"],
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "{{project_id}}"
+                  }
+                ]
+              }
+            },
+            "response": []
+          },
+          {
+            "name": "Delete Project (Archive)",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "X-User-Id",
+                  "value": "{{user_id}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Email",
+                  "value": "{{user_email}}",
+                  "type": "text"
+                },
+                {
+                  "key": "X-User-Role",
+                  "value": "ADMIN",
+                  "type": "text"
+                }
+              ],
+              "url": {
+                "raw": "{{base_url}}/projects/:id",
+                "host": ["{{base_url}}"],
+                "path": ["projects", ":id"],
+                "variable": [
+                  {
+                    "key": "id",
+                    "value": "{{project_id}}"
+                  }
+                ]
+              }
+            },
+            "response": []
+          }
+        ]
+      }
+    ]
+  }

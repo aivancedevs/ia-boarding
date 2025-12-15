@@ -1,0 +1,44 @@
+{
+  "name": "users-service",
+  "version": "1.0.0",
+  "description": "Microservicio de gestión de usuarios, clientes y proyectos",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "postinstall": "prisma generate",
+    "migrate": "prisma migrate dev",
+    "migrate:deploy": "prisma migrate deploy",
+    "generate": "prisma generate",
+    "seed": "node prisma/seed.js",
+    "studio": "prisma studio",
+    "test": "jest --coverage",
+    "docker:build": "docker build -t users-service .",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
+  },
+  "keywords": ["microservice", "users", "clients", "projects"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^5.8.0",
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "joi": "^17.11.0",
+    "winston": "^3.11.0",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "express-rate-limit": "^7.1.5"
+  },
+  "devDependencies": {
+    "prisma": "^5.8.0",
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

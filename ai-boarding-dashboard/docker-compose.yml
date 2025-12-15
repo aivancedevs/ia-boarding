@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  ai-boarding-dashboard:
+    container_name: ai-boarding-dashboard
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+    networks:
+      - ai-boarding-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  ai-boarding-network:
+    driver: bridge
